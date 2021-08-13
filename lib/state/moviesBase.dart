@@ -29,9 +29,7 @@ abstract class MoviesListBase with Store{
   createMoviesList() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final keys = prefs.getKeys();
-    print("data $keys");
     keys.forEach((element) {
-      print("keys : $element");
       if (element != "primarykey") {
         String values = prefs.getString(element) ?? "";
         if (values.isNotEmpty) {
@@ -41,11 +39,8 @@ abstract class MoviesListBase with Store{
           String director = movies[1];
           String summary = movies[2];
           String tags = movies[3];
-          print("$primarykeys $title $director $summary $tags");
           Movies film = Movies(primarykeys, title, director, summary, tags);
-          print("data $primarykeys $title $director $summary $tags");
           moviesList.add(film);
-          print("movies list size ${moviesList.length}");
         }
       }
     });
@@ -64,15 +59,12 @@ abstract class MoviesListBase with Store{
       print("index $counter");
       prefs.setString("$counter", data).then((bool success) {
         if (success) {
-          print("data successfully added / updated at $counter $data");
         }
         return success;
       });
     }else{
       prefs.setString(pk, data).then((bool success) {
         if (success) {
-          print("data successfully added / updated");
-          print("${prefs.getString(pk)}");
         }
         return success;
       });
@@ -83,7 +75,6 @@ abstract class MoviesListBase with Store{
     String director = movies[1];
     String summary = movies[2];
     String tags = movies[3];
-    print("$primarykeys $title $director $summary $tags");
     Movies film = Movies(primarykeys, title, director, summary, tags);
     moviesList.add(film);
   }

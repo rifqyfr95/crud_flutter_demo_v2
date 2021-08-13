@@ -1,6 +1,9 @@
 # crud_flutter
 
-Flutter CRUD Apps : Simple CRUD Flutter Apps that utilizes MobX and AutoRoute to help us manage data, state, and route management inside our codes
+Flutter CRUD Apps, this application utilizes libraries such as MobX, AutoRoute and TypeAheadField to enhance the experience and easy-to-develop crud application.
+If you have something to change in either router.dart or moviesBase.dart file, you must execute a command below in project's location
+
+flutter packages pub run build_runner build
 
 ## Getting Started
 
