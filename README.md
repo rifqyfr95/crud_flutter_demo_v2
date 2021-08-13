@@ -1,6 +1,6 @@
 # crud_flutter
 
-Flutter CRUD Apps
+Flutter CRUD Apps : Simple CRUD Flutter Apps that utilizes MobX and AutoRoute to help us manage data, state, and route management inside our codes
 
 ## Getting Started
 
