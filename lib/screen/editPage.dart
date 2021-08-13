@@ -110,17 +110,11 @@ class _EditMoviesState extends State<EditMovies> {
                   InkWell(
                     child: TextButton(
                         onPressed: () {
-                          print(tagsChosen.length);
-                          print(_titleController.text);
-                          print(_directorController.text);
-                          print(_summaryController.text);
                           if (tagsChosen.isNotEmpty &&
                               _titleController.text.isNotEmpty &&
                               _directorController.text.isNotEmpty &&
                               _summaryController.text.isNotEmpty) {
 
-                            _moviesBase.createIndex();
-                            print(_moviesBase.currentIndex);
                             String newTags = "";
                             tagsChosen.forEach((element) {
                               if (newTags.isEmpty) {
@@ -129,7 +123,6 @@ class _EditMoviesState extends State<EditMovies> {
                                 newTags = newTags + "," + element;
                               }
                             });
-                            print("tags $newTags");
                             String newData = _titleController.text +
                                 "||" +
                                 _directorController.text +
@@ -137,11 +130,8 @@ class _EditMoviesState extends State<EditMovies> {
                                 _summaryController.text +
                                 "||" +
                                 newTags;
-                            int newIndex = _moviesBase.currentIndex;
-                            String newIndexString = newIndex.toString();
-                            _moviesBase.inputMovies(newIndexString, newData);
+                            _moviesBase.inputMovies("", newData);
                             Future.delayed(new Duration(seconds: 3), () {
-                              // AutoRouter.of(context).pop(true);
                               AutoRouter.of(context).replace(
                                   MoviesListsRoute(title: "Movies"));
                             });
@@ -188,7 +178,6 @@ class _EditMoviesState extends State<EditMovies> {
                               newTags = newTags + "," + element;
                             }
                           });
-                          print("tags $newTags");
                           String newData = _titleController.text +
                               "||" +
                               _directorController.text +
@@ -198,7 +187,6 @@ class _EditMoviesState extends State<EditMovies> {
                               newTags;
                           _moviesBase.inputMovies(pk, newData);
                           Future.delayed(new Duration(seconds: 3), () {
-                            // AutoRouter.of(context).pop(true);
                             AutoRouter.of(context)
                                 .replace(MoviesListsRoute(title: "Movies"));
                           });
@@ -284,7 +272,6 @@ class _EditMoviesState extends State<EditMovies> {
                     setState(() {
                       if (!tagsChosen.contains(tags)) {
                         tagsChosen.add(tags);
-                        print(tagsChosen.length);
                       }
                     });
                   }, tagsChosen),
@@ -306,7 +293,6 @@ class _EditMoviesState extends State<EditMovies> {
       _directorController.text = widget.movies!.director;
       _summaryController.text = widget.movies!.summary;
       List<String> tags = widget.movies!.tags.split(",");
-      print(widget.movies!.tags);
       tagsChosen.addAll(tags);
       pk = widget.movies!.pk.toString();
       data = widget.movies!.pk.toString() +
@@ -318,55 +304,7 @@ class _EditMoviesState extends State<EditMovies> {
           widget.movies!.summary +
           "||" +
           widget.movies!.tags;
-      print(data);
     }
   }
 
-  Future<void> _saveToMemory(String pk, String data) async {
-    final SharedPreferences prefs = await _prefs;
-    setState(() {
-      String values = prefs.getString(pk) ?? "";
-      print("values of key data $values $pk $data");
-      prefs.setString(pk, data).then((bool success) {
-        if (success) {
-          print("data successfully added / updated");
-          print("${prefs.getString(pk)}");
-        }
-        return success;
-      });
-    });
-  }
-
-  Future<void> _deleteFromMemory(String pk) async {
-    final SharedPreferences prefs = await _prefs;
-    setState(() {
-      prefs.remove(pk).then((bool success) {
-        if (success) {
-          print("data removed");
-        }
-        return success;
-      });
-    });
-  }
-
-  Future<int> _createIndex() async {
-    final SharedPreferences prefs = await _prefs;
-    int counter = prefs.getInt("primarykey") ?? 0;
-    setState(() {
-      print("$counter");
-      if (counter != 0) {
-        counter++;
-        print("$counter increase");
-        prefs.setInt("primarykey", counter).then((bool success) {
-          if (success) print("primary key updated : $counter");
-        });
-      } else {
-        prefs.setInt("primarykey", counter).then((bool success) {
-          if (success) print("primary key updated : $counter");
-        });
-      }
-    });
-
-    return counter;
-  }
 }

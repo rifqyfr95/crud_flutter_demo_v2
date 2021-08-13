@@ -15,8 +15,6 @@ class AddTags extends StatefulWidget {
 
 class _AddTagsState extends State<AddTags> {
   TextEditingController tagsController = TextEditingController();
-
-  // var _temporaryTags = <int,String>{};
   var _temporaryTagsList = <String>[];
   bool onDisable = true;
 

@@ -23,13 +23,6 @@ mixin _$MoviesBase on MoviesListBase, Store {
       (_$listLengthComputed ??= Computed<int>(() => super.listLength,
               name: 'MoviesListBase.listLength'))
           .value;
-  Computed<int>? _$currentIndexComputed;
-
-  @override
-  int get currentIndex =>
-      (_$currentIndexComputed ??= Computed<int>(() => super.currentIndex,
-              name: 'MoviesListBase.currentIndex'))
-          .value;
 
   final _$moviesListAtom = Atom(name: 'MoviesListBase.moviesList');
 
@@ -90,21 +83,13 @@ mixin _$MoviesBase on MoviesListBase, Store {
     return _$deleteMoviesAsyncAction.run(() => super.deleteMovies(pk, data));
   }
 
-  final _$createIndexAsyncAction = AsyncAction('MoviesListBase.createIndex');
-
-  @override
-  Future createIndex() {
-    return _$createIndexAsyncAction.run(() => super.createIndex());
-  }
-
   @override
   String toString() {
     return '''
 moviesList: ${moviesList},
 counterIndex: ${counterIndex},
 lists: ${lists},
-listLength: ${listLength},
-currentIndex: ${currentIndex}
+listLength: ${listLength}
     ''';
   }
 }

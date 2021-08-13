@@ -24,6 +24,7 @@ abstract class MoviesListBase with Store{
   @computed
   int get listLength => moviesList.length;
 
+
   @action
   createMoviesList() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -53,26 +54,38 @@ abstract class MoviesListBase with Store{
   @action
   inputMovies(String pk, String data) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String values = prefs.getString(pk) ?? "";
-    print("values of key data $values $pk $data");
-    prefs.setString(pk, data).then((bool success) {
-      if (success) {
-        print("data successfully added / updated");
-        print("${prefs.getString(pk)}");
-      }
-      return success;
-    });
+    int counter = 0;
+    if (pk == ""){
+      counter = prefs.getInt("primarykey") ?? 0;
+      counter = counter + 1;
+      prefs.setInt("primarykey", counter).then((bool success) {
+        counterIndex = counter;
+      });
+      print("index $counter");
+      prefs.setString("$counter", data).then((bool success) {
+        if (success) {
+          print("data successfully added / updated at $counter $data");
+        }
+        return success;
+      });
+    }else{
+      prefs.setString(pk, data).then((bool success) {
+        if (success) {
+          print("data successfully added / updated");
+          print("${prefs.getString(pk)}");
+        }
+        return success;
+      });
+    }
     List<String> movies = data.split("||");
-    int primarykeys = int.parse(pk);
+    int primarykeys = int.parse(pk == ""? "$counter":pk);
     String title = movies[0];
     String director = movies[1];
     String summary = movies[2];
     String tags = movies[3];
     print("$primarykeys $title $director $summary $tags");
     Movies film = Movies(primarykeys, title, director, summary, tags);
-    print("data $primarykeys $title $director $summary $tags");
     moviesList.add(film);
-    print("movies list size ${moviesList.length}");
   }
 
 
@@ -87,40 +100,9 @@ abstract class MoviesListBase with Store{
     String director = movies[1];
     String summary = movies[2];
     String tags = movies[3];
-    print("$primarykeys $title $director $summary $tags");
     Movies film = Movies(primarykeys, title, director, summary, tags);
-    print("data $primarykeys $title $director $summary $tags");
     moviesList.remove(film);
   }
 
-  @action
-  createIndex() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    int counter = prefs.getInt("primarykey") ?? 0;
-    print("$counter");
-    counter++;
-    print("$counter increase");
-    prefs.setInt("primarykey", counter).then((bool success) {
-      if (success) print("primary key updated : $counter");
-      counterIndex = counter;
-    });
-    // if (counter != 0) {
-    //   counter++;
-    //   print("$counter increase");
-    //   prefs.setInt("primarykey", counter).then((bool success) {
-    //     if (success) print("primary key updated : $counter");
-    //     counterIndex = counter;
-    //   });
-    // } else {
-    //   prefs.setInt("primarykey", counter).then((bool success) {
-    //     if (success) print("primary key updated : $counter");
-    //     counterIndex = counter;
-    //   });
-    // }
-
-  }
-
-  @computed
-  int get currentIndex => counterIndex;
 
 }
